@@ -1,19 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace SysRix.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     public class ServicesController : Controller
     {
-        // GET api/users
-        [HttpGet]
-        public IEnumerable<string> Get()
+        // GET api/ice
+        [HttpGet("ice")]
+        public IEnumerable<string> Get(string ident, string secret, string domain, string application, string room)
         {
             return new string[] { "Server1", "address" };
         }
+
+        // POST api/values
+        [HttpPost]
+        public void Post([FromBody] string value)
+        {
+        }
+
     }
 }

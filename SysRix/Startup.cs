@@ -4,9 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using SysRix.Models;
 
 namespace SysRix
 {
@@ -28,7 +30,13 @@ namespace SysRix
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
+
+            services.AddDbContext<UserContext>(options =>
+                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddMvc();
+
+            services.AddScoped<IUserRepository, UserRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,6 +46,8 @@ namespace SysRix
             loggerFactory.AddDebug();
 
             app.UseMvc();
+
+            DBinitialize.EnsureCreated(app.ApplicationServices);
         }
     }
 }
