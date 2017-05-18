@@ -7,6 +7,7 @@ namespace SysRix.Models
         void Add(User user);
         IEnumerable<User> GetAll();
         User Find(long id);
+        User FindMatch(string name, string secret, string domain);
         void Remove(long id);
         void Update(User item);
     }

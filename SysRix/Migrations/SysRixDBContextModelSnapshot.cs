@@ -40,11 +40,7 @@ namespace SysRix.Migrations
 
                     b.Property<string>("Domain");
 
-                    b.Property<string>("Password");
-
-                    b.Property<string>("Realm");
-
-                    b.Property<int>("Usage");
+                    b.Property<string>("Secret");
 
                     b.Property<string>("Username");
 

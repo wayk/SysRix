@@ -37,6 +37,7 @@ namespace SysRix
             services.AddMvc();
 
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IServerRepository, ServerRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

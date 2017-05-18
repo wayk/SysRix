@@ -42,7 +42,6 @@ namespace SysRix.Controllers
 				return BadRequest();
 
 			user.Domain = "example.com";
-			user.Usage = 0;
 
 			userRepo.Add(user);
 

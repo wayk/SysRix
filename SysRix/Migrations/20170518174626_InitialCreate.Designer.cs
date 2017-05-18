@@ -8,7 +8,7 @@ using SysRix.Models;
 namespace SysRix.Migrations
 {
     [DbContext(typeof(SysRixDBContext))]
-    [Migration("20170518154425_InitialCreate")]
+    [Migration("20170518174626_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,11 +41,7 @@ namespace SysRix.Migrations
 
                     b.Property<string>("Domain");
 
-                    b.Property<string>("Password");
-
-                    b.Property<string>("Realm");
-
-                    b.Property<int>("Usage");
+                    b.Property<string>("Secret");
 
                     b.Property<string>("Username");
 

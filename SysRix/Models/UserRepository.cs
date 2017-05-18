@@ -28,6 +28,16 @@ namespace SysRix.Models
             return ctx.Users.FirstOrDefault(t => t.Id == id);
         }
 
+        public User FindMatch(string name, string secret, string domain)
+        {
+            var user = ctx.Users.SingleOrDefault(t => t.Username == name && t.Domain == domain);
+
+            if (user == null)
+                return null;
+
+            return user.Secret != secret ? null : user;
+        }
+
         public void Remove(long id)
         {
             var entity = ctx.Users.First(t => t.Id == id);

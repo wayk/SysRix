@@ -17,7 +17,7 @@ namespace SysRix.Models
 			return ctx.Servers.ToList();
 		}
 
-		public Server Find(int id)
+		public Server Find(long id)
 		{
 			return ctx.Servers.FirstOrDefault(t => t.Id == id);
 		}

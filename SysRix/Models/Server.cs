@@ -1,4 +1,6 @@
-﻿namespace SysRix.Models
+﻿using System.Collections.Generic;
+
+namespace SysRix.Models
 {
 	public class Server
 	{
@@ -7,5 +9,12 @@
 		public string Type { get; set; }
 		public string TransportType { get; set; }
 		public int Port { get; set; }
+	}
+
+	public class IceServer
+	{
+		public string Credential;
+		public string Username;
+		public IEnumerable<Server> ServerList;
 	}
 }
