@@ -2,9 +2,10 @@
 
 namespace SysRix.Models
 {
-    public class UserContext : DbContext
+    public class SysRixDBContext : DbContext
     {
         public DbSet<User> Users { get; set; }
+        public DbSet<Server> Servers { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

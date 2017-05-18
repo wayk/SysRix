@@ -6,7 +6,7 @@ namespace SysRix.Models
     {
         public static void EnsureCreated(IServiceProvider serviceProvider)
         {
-            var context = new UserContext();
+            var context = new SysRixDBContext();
             context.Database.EnsureCreated();
         }
     }

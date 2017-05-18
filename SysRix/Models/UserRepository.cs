@@ -5,9 +5,9 @@ namespace SysRix.Models
 {
     public class UserRepository : IUserRepository
     {
-        private readonly UserContext ctx;
+        private readonly SysRixDBContext ctx;
 
-        public UserRepository(UserContext context)
+        public UserRepository(SysRixDBContext context)
         {
             ctx = context;
         }

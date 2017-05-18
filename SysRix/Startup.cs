@@ -31,7 +31,7 @@ namespace SysRix
         {
             // Add framework services.
 
-            services.AddDbContext<UserContext>(options =>
+            services.AddDbContext<SysRixDBContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddMvc();

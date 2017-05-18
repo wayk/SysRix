@@ -7,14 +7,31 @@ using SysRix.Models;
 
 namespace SysRix.Migrations
 {
-    [DbContext(typeof(UserContext))]
-    [Migration("20170518145742_InitialCreate")]
-    partial class InitialCreate
+    [DbContext(typeof(SysRixDBContext))]
+    partial class SysRixDBContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.4");
+
+            modelBuilder.Entity("SysRix.Models.Server", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Port");
+
+                    b.Property<string>("TransportType");
+
+                    b.Property<string>("Type");
+
+                    b.Property<string>("Url");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Servers");
+                });
 
             modelBuilder.Entity("SysRix.Models.User", b =>
                 {
