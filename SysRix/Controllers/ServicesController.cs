@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
 using System.Net.Sockets;
+using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
@@ -47,7 +48,20 @@ namespace SysRix.Controllers
                 return NotFound("Invalid params");
             }
 
-            var localIpAddress = HttpContext.Features.Get<IHttpConnectionFeature>().LocalIpAddress;
+            var interfaces = NetworkInterface.GetAllNetworkInterfaces().SelectMany(a =>
+                a.GetIPProperties().UnicastAddresses.Where(u =>
+                    u.Address.AddressFamily == AddressFamily.InterNetwork).Select(u =>
+                        u.Address));
+
+            var ipAddress = "";
+            foreach (var inet in interfaces)
+            {
+                if (inet.ToString().StartsWith("127."))
+                    continue;
+
+                ipAddress = inet.ToString();
+                break;
+            }
 
             var credential = Guid.NewGuid().ToString();
             var username = Guid.NewGuid().ToString();
@@ -58,13 +72,13 @@ namespace SysRix.Controllers
                 new IceServer
                 {
                     Credential = "",
-                    Url = "stun:" + localIpAddress,
+                    Url = "stun:" + ipAddress,
                     Username = ""
                 },
                 new IceServer
                 {
                     Credential = credential,
-                    Url = "turn:" + localIpAddress + "3478?transport=udp",
+                    Url = "turn:" + ipAddress + "3478?transport=udp",
                     Username = username
                 }
             };
