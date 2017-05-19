@@ -42,6 +42,7 @@ namespace SysRix.Models
             }
             catch (Exception e)
             {
+                Console.WriteLine(e);
                 return null;
             }
 
