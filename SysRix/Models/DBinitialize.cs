@@ -10,6 +10,8 @@ namespace SysRix.Models
             var context = new SysRixDBContext();
             context.Database.EnsureCreated();
 
+            if (context.Users.ToList().Count != 0) return;
+
             context.Users.Add(
                 new User
                 {
