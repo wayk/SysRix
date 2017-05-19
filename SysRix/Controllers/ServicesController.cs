@@ -18,11 +18,19 @@ namespace SysRix.Controllers
     {
         private readonly IServerRepository serverRepo;
         private readonly IUserRepository userRepo;
+        private static readonly Random random = new Random();
 
         public ServicesController(IServerRepository srepo, IUserRepository urepo)
         {
             serverRepo = srepo;
             userRepo = urepo;
+        }
+
+        public static string GenerateRealm(int length)
+        {
+            const string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
         // GET api/ice
@@ -31,44 +39,41 @@ namespace SysRix.Controllers
         {
             if (ident == null || secret == null || domain == null || application == null || room == null)
             {
-                return NotFound("Invalid params");
+                return NotFound("Missing params");
             }
 
-            var httpConnectionFeature = HttpContext.Features.Get<IHttpConnectionFeature>();
-            var localIpAddress = httpConnectionFeature?.LocalIpAddress;
-
-            var user = userRepo.FindMatch(ident, secret, domain);
-
-            if (user == null)
+            if (userRepo.FindMatch(ident, secret, domain) == null)
             {
                 return NotFound("Invalid params");
             }
 
-            var iceServer = new IceServer
+            var localIpAddress = HttpContext.Features.Get<IHttpConnectionFeature>().LocalIpAddress;
+
+            var credential = Guid.NewGuid().ToString();
+            var username = Guid.NewGuid().ToString();
+
+
+            var iceServer = new IceServer[]
             {
-                Credential = Guid.NewGuid().ToString(),
-                Username = Guid.NewGuid().ToString(),
-                ServerList = new Server[]
+                new IceServer
                 {
-                    new Server
-                    {
-                        Id = 0,
-                        Port = 3478,
-                        TransportType = "",
-                        Type = "stun",
-                        Url = localIpAddress.ToString()
-                    },
-                    new Server
-                    {
-                        Id = 1,
-                        Port = 3478,
-                        TransportType = "udp",
-                        Type = "turn",
-                        Url = localIpAddress.ToString()
-                    }
+                    Credential = "",
+                    Url = "stun:" + localIpAddress,
+                    Username = ""
+                },
+                new IceServer
+                {
+                    Credential = credential,
+                    Url = "turn:" + localIpAddress + "3478?transport=udp",
+                    Username = username
                 }
             };
 
+            var realm = GenerateRealm(random.Next(32, 64));
+
+            var args = "-a -u " + username + " -r " + realm + " -p " + credential;
+
+            Process.Start("turnadmin", args);
 
             return new ObjectResult(iceServer);
         }

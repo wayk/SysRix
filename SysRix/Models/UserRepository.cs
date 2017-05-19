@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace SysRix.Models
@@ -30,12 +31,20 @@ namespace SysRix.Models
 
         public User FindMatch(string name, string secret, string domain)
         {
-            var user = ctx.Users.SingleOrDefault(t => t.Username == name && t.Domain == domain);
+            try
+            {
+                var user = ctx.Users.FirstOrDefault(t => t.Username == name && t.Domain == domain);
 
-            if (user == null)
+                if (user == null)
+                    return null;
+
+                return user.Secret != secret ? null : user;
+            }
+            catch (Exception e)
+            {
                 return null;
+            }
 
-            return user.Secret != secret ? null : user;
         }
 
         public void Remove(long id)

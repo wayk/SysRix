@@ -15,6 +15,6 @@ namespace SysRix.Models
 	{
 		public string Credential;
 		public string Username;
-		public IEnumerable<Server> ServerList;
+		public string Url;
 	}
 }
